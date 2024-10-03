@@ -1,3 +1,24 @@
 {% extends "clients/base.html" %}
 
 {% block title %} Просмотр профиля клиента {% endblock %}
+
+{% block content %}
+            <div class="card text-center mb-4 box-shadow w-50">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal"></h4>
+                </div>
+                <div class="card-subtitle">
+                    <h6 class="card-subtitle mt-2 text-body-secondary">{{ client.email }}</h6>
+                </div>
+                <div class="card-body">
+                    <h6>{{ client.comment }}</h6>
+                </div>
+                <div class="card-footer">
+                    <a class="btn btn-primary" href="{{ client.get_absolute_url }}" role="button">Просмотр</a>
+                    <a class="btn btn-primary" href="{% url 'clients:edit_client' client.pk %}"
+                       role="button">Изменить</a>
+                    <a class="btn btn-danger" href="{% url 'clients:delete_client' client.pk %}"
+                       role="button">Удалить</a>
+                </div>
+            </div>
+{% endblock %}

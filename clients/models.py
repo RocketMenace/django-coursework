@@ -30,3 +30,7 @@ class Client(models.Model):
 
     def get_absolute_url(self):
         return reverse("clients:detail_client", args=[self.pk])
+
+    def get_full_name(self):
+        """Returns client's full name."""
+        return f"{self.last_name} {self.first_name} {self.middle_name}"

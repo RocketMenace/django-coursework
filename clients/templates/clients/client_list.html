@@ -1,31 +1,39 @@
 {% extends "clients/base.html" %}
 
 {% block title %} Просмотр клиентов {% endblock %}
-
+{% block client_addition %}
+<a class="p-2 btn btn-outline-primary" href="{% url 'clients:create_client' %}"
+   role="button">Добавление клиента</a>
+{% endblock %}
 {% block content %}
-{% for client in clients %}
-<div class="col-4" >
 
-            <div class="card text-center mb-4 box-shadow">
-                <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">{{ client.last_name }} {{ client.first_name }} {{ client.middle_name }}</h4>
-                </div>
-                <div class="card-subtitle">
-                    <h6 class="card-subtitle mt-2 text-body-secondary">{{ client.email }}</h6>
-                </div>
-                <div class="card-body">
-                    <h6>{{ client.comment }}</h6>
-                </div>
-                <div class="card-footer">
-                    <a class="btn btn-primary" href="{{ client.get_absolute_url }}" role="button">Просмотр</a>
-                    <a class="btn btn-primary" href="/"
-                       role="button">Изменить</a>
-                    <a class="btn btn-danger" href="/"
-                       role="button">Удалить</a>
-                </div>
-            </div>
-        </div>
-{% endfor %}
+<div class="container text-center">
+    <div class="row">
+        <table class="table">
+            <thead>
+
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Клиент</th>
+                <th scope="col">Адрес электронной почты</th>
+            </tr>
+            </thead>
+            <tbody class="table-group-divider">
+            {% for client in clients %}
+            <tr>
+                <th scope="row">{{ client.pk }}</th>
+                <td><a style="text-decoration:none; font-size: 20px;" href="{{ client.get_absolute_url }}"
+                       class="row-link">{{ client.get_full_name }}</a></td>
+                <td>{{ client.email }}</td>
+                </a>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
 
 {% endblock %}
 
