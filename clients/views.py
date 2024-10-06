@@ -6,8 +6,7 @@ from .forms import ClientCreateForm, ClientUpdateForm
 # Create your views here.
 
 
-def base_view(request):
-    return render(request, "clients/base.html")
+
 
 
 class ClientsListView(ListView):
@@ -41,4 +40,3 @@ class ClientsDeleteView(DeleteView):
     model = Client
     context_object_name = "client"
     success_url = reverse_lazy("clients:clients")
-    # form_class = ClientDeleteForm

@@ -1,0 +1,23 @@
+{% extends "clients/base.html" %}
+
+{% block title %} Просмотр рассылки {% endblock %}
+
+{% block content %}
+            <div class="card text-center mb-4 box-shadow w-50">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Рассылка - {{ newsletter.pk }}</h4>
+                </div>
+                <div class="card-subtitle">
+                    <h6 class="card-subtitle mt-2 text-body-secondary">Дата начала {{ newsletter.start_date }}</h6>
+                </div>
+                <div class="card-body">
+                    <h6>Получатели: {% for recipient in newsletter.recipient.all %} {{recipient.get_full_name}}, {% endfor %}</h6>
+                </div>
+                <div class="card-footer">
+                    <a class="btn btn-primary" href="{% url 'newsletter:edit_newsletter' newsletter.pk %}"
+                       role="button">Изменить</a>
+                    <a class="btn btn-danger" href="{% url 'newsletter:delete_newsletter' newsletter.pk %}"
+                       role="button">Удалить</a>
+                </div>
+            </div>
+{% endblock %}

@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 from clients.models import Client
 
@@ -19,6 +20,8 @@ class Message(models.Model):
         return f"{self.title}"
 
 
+
+
 class NewsLetter(models.Model):
 
     class Regularity(models.TextChoices):
@@ -31,9 +34,8 @@ class NewsLetter(models.Model):
         CREATED = "создана"
         RUNNING = "запущена"
 
-    start_date = models.DateTimeField(
-        default=timezone.now, verbose_name="дата первой отправки"
-    )
+    start_date = models.DateTimeField(verbose_name="дата первой отправки")
+    end_date = models.DateTimeField(verbose_name="дата завершения")
     message = models.OneToOneField(
         Message,
         on_delete=models.CASCADE,
@@ -58,9 +60,12 @@ class NewsLetter(models.Model):
         verbose_name_plural = "рассылки"
         ordering = ["status", "start_date"]
 
-
     def __str__(self):
         return f"Рассылка: {self.pk} Статус: {self.status} Периодичность: {self.regularity}"
+
+    def get_absolute_url(self):
+        return reverse("newsletter:detail_newsletter", args=[self.pk])
+
 
 
 class DistributionAttempt(models.Model):

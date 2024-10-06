@@ -1,0 +1,37 @@
+{% extends "clients/base.html" %}
+
+{% block title %} История рассылок {% endblock %}
+{% block options %}
+<a class="p-2 btn btn-outline-primary" href="{% url 'newsletter:newsletters' %}"
+   role="button">Список рассылок</a>
+{% endblock %}
+{% block content %}
+
+<div class="container text-center">
+    <div class="row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Рассылка</th>
+                <th scope="col">Статус</th>
+                <th scope="col">Ответ сервера</th>
+                <th scope="col">Последняя попытка</th>
+            </tr>
+            </thead>
+            <tbody class="table-group-divider">
+            {% for attempt in attempts %}
+            <tr>
+                <th scope="row">{{ attempt.newsletter.pk }}</th>
+                <td>{{ attempt.status }}</td>
+                <td>{{ attempt.server_response }}</td>
+                <td>{{ attempt.last_try }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endblock %}
+

@@ -1,0 +1,57 @@
+{% extends "clients/base.html" %}
+
+{% block title %} Список рассылок {% endblock %}
+{% block options %}
+<a class="p-2 btn btn-outline-primary" href="{% url 'newsletter:create_newsletter' %}"
+   role="button">Создать рассылку</a>
+<a class="p-2 btn btn-outline-primary" href="{% url 'newsletter:create_message' %}"
+   role="button">Создать сообщение для рассылки</a>
+<a class="p-2 btn btn-outline-primary" href="{% url 'clients:clients' %}"
+   role="button">Список клиентов</a>
+{% endblock %}
+{% block content %}
+
+<div class="container text-center">
+    <div class="row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">ID рассылки</th>
+                <th scope="col">Получатели</th>
+                <th scope="col">Сообщение</th>
+                <th scope="col">Статус</th>
+                <th scope="col">Дата начала</th>
+                <th scope="col">Дата окончания</th>
+                <th scope="col">Периодичность</th>
+                <th scope="col">История</th>
+            </tr>
+            </thead>
+            <tbody class="table-group-divider">
+            {% for newsletter in newsletters %}
+            <tr>
+                <th scope="row"><a style="text-decoration:none; font-size: 20px;" href="{% url 'newsletter:detail_newsletter' newsletter.pk %}">{{ newsletter.pk }}</a></th>
+                <td><a style="text-decoration:none; font-size: 20px;" href="{% url 'newsletter:recipients' newsletter.pk %}"
+                       class="row-link">Просмотреть</a></td>
+                <td><a style="text-decoration:none; font-size: 20px;" href="{% url 'newsletter:detail_message' newsletter.message.pk %}"
+                       class="row-link">{{ newsletter.message.title }}</a></td>
+                <td>{{ newsletter.status }}</td>
+                <td>{{ newsletter.start_date }}</td>
+                <td>{{ newsletter.end_date }}</td>
+                <td>{{ newsletter.regularity }}</td>
+                <td><a style="text-decoration:none; font-size: 20px;" href="{% url 'newsletter:attempts' %}"
+                       class="row-link">Просмотреть</a></td></td>
+                {% if newsletter.status == 'создана' %}
+                <td><button type="button" class="btn btn-primary">Запустить</button></td>
+                {% elif newsletter.status == 'запущена' %}
+                <td><button type="button" class="btn btn-danger">Остановить</button></td>
+                {% else %}
+                <td><button type="button" class="btn btn-secondary" disabled>Завершена</button></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+

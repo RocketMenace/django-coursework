@@ -1,6 +1,6 @@
 {% extends "clients/base.html" %}
 
-{% block title %} Просмотр профиля клиента {% endblock %}
+{% block title %} Просмотр сообщения {% endblock %}
 
 {% block content %}
             <div class="card text-center mb-4 box-shadow w-50">
@@ -8,15 +8,15 @@
                     <h4 class="my-0 font-weight-normal"></h4>
                 </div>
                 <div class="card-subtitle">
-                    <h6 class="card-subtitle mt-2 text-body-secondary">{{ client.email }}</h6>
+                    <h6 class="card-subtitle mt-2 text-body-secondary">{{ message.title }}</h6>
                 </div>
                 <div class="card-body">
-                    <h6>{{ client.comment }}</h6>
+                    <h6>{{ message.body }}</h6>
                 </div>
                 <div class="card-footer">
-                    <a class="btn btn-primary" href="{% url 'clients:edit_client' client.pk %}"
+                    <a class="btn btn-primary" href="{% url 'newsletter:edit_message' message.pk %}"
                        role="button">Изменить</a>
-                    <a class="btn btn-danger" href="{% url 'clients:delete_client' client.pk %}"
+                    <a class="btn btn-danger" href="{% url 'newsletter:delete_message' message.pk %}"
                        role="button">Удалить</a>
                 </div>
             </div>

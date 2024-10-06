@@ -1,0 +1,39 @@
+{% extends "clients/base.html" %}
+
+{% block title %} Просмотр получателей {% endblock %}
+{% block client_addition %}
+<a class="p-2 btn btn-outline-primary" href="{% url 'newsletter:newsletters' %}"
+   role="button">Просмотр рассылок</a>
+{% endblock %}
+{% block content %}
+
+<div class="container text-center">
+    <div class="row">
+        <table class="table">
+            <thead>
+
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Клиент</th>
+                <th scope="col">Адрес электронной почты</th>
+            </tr>
+            </thead>
+            <tbody class="table-group-divider">
+            {% for recipient in recipients %}
+            <tr>
+                <th scope="row">{{ recipient.pk }}</th>
+                <td><a style="text-decoration:none; font-size: 20px;" href="{{ client.get_absolute_url }}"
+                       class="row-link">{{ recipient.get_full_name }}</a></td>
+                <td>{{ client.email }}</td>
+                </a>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+{% endblock %}
+
