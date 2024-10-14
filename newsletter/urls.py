@@ -1,4 +1,6 @@
 from django.urls import path
+
+from .models import DistributionAttempt
 from .views import (
     NewsLetterListView,
     NewsLetterCreateView,
@@ -10,7 +12,7 @@ from .views import (
     MessageUpdateView,
     MessageDetailView,
     MessageDeleteView,
-    main_page, DistributionAttemptListView, recipients_list
+    main_page, recipients_list, distribution_attempts
 )
 from .apps import NewsletterConfig
 
@@ -18,6 +20,8 @@ app_name = NewsletterConfig.name
 
 urlpatterns = [
     path("", main_page, name="main_page"),
+
+    # CRUD urls for newsletter.
     path(
         "create_newsletter/", NewsLetterCreateView.as_view(), name="create_newsletter"
     ),
@@ -35,10 +39,17 @@ urlpatterns = [
     path(
         "delete_newsletter/<int:pk>", NewsLetterDeleteView.as_view(), name="delete_newsletter"
     ),
+
+    #CRUD urls for messages.
     path("create_message/", MessageCreateView.as_view(), name="create_message"),
     path("detail_message/<int:pk>", MessageDetailView.as_view(), name="detail_message"),
     path("edit_message/<int:pk>", MessageUpdateView.as_view(), name="edit_message"),
     path("delete_message/<int:pk>", MessageDeleteView.as_view(), name="delete_message"),
-    path("attempts/", DistributionAttemptListView.as_view(), name="attempts"),
-    path("recipients/<int:pk>", recipients_list, name="recipients")
+
+
+    # url for getting recipients list.
+    path("recipients/<int:pk>", recipients_list, name="recipients"),
+
+    # url for
+    path("newsletters/<int:pk>/attempts/", distribution_attempts, name="attempts"),
 ]

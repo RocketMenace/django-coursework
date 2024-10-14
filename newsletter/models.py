@@ -20,8 +20,6 @@ class Message(models.Model):
         return f"{self.title}"
 
 
-
-
 class NewsLetter(models.Model):
 
     class Regularity(models.TextChoices):
@@ -61,11 +59,10 @@ class NewsLetter(models.Model):
         ordering = ["status", "start_date"]
 
     def __str__(self):
-        return f"Рассылка: {self.pk} Статус: {self.status} Периодичность: {self.regularity}"
+        return f"Рассылка: {self.pk}, Статус: {self.status}, Периодичность: {self.regularity}"
 
     def get_absolute_url(self):
         return reverse("newsletter:detail_newsletter", args=[self.pk])
-
 
 
 class DistributionAttempt(models.Model):
@@ -80,7 +77,12 @@ class DistributionAttempt(models.Model):
         max_length=10, choices=Status.choices, verbose_name="статус"
     )
     server_response = models.TextField(verbose_name="ответ сервера")
-    newsletter = models.ManyToManyField(NewsLetter, verbose_name="рассылка")
+    newsletter = models.ForeignKey(
+        NewsLetter,
+        verbose_name="рассылка",
+        on_delete=models.CASCADE,
+        related_name="attempts",
+    )
 
     class Meta:
 

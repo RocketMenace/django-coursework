@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import DateTimeField, DateTimeInput, SplitDateTimeWidget
-
+from django.utils import timezone
 from .models import NewsLetter, Message, DistributionAttempt
 
 
@@ -25,6 +25,18 @@ class NewsLetterCreateForm(StyleFormMixin, forms.ModelForm):
             ),
         }
 
+    def clean_start_date(self):
+        cd = self.cleaned_data
+        if cd["start_date"] < timezone.now():
+            raise forms.ValidationError("Нельзя указать прошедшее время.")
+        return cd["start_date"]
+
+    def clean_end_date(self):
+        cd = self.cleaned_data
+        if cd["end_date"] < timezone.now():
+            raise forms.ValidationError("Нельзя указать прошедшее время.")
+        return cd["end_date"]
+
 
 class NewsLetterUpdateForm(StyleFormMixin, forms.ModelForm):
 
@@ -39,6 +51,18 @@ class NewsLetterUpdateForm(StyleFormMixin, forms.ModelForm):
                 format="%Y-%m-%d %H:%M", attrs={"type": "datetime-local"}
             ),
         }
+
+    def clean_start_date(self):
+        cd = self.cleaned_data
+        if cd["start_date"] < timezone.now():
+            raise forms.ValidationError("Нельзя указать прошедшее время.")
+        return cd["start_date"]
+
+    def clean_end_date(self):
+        cd = self.cleaned_data
+        if cd["end_date"] < timezone.now():
+            raise forms.ValidationError("Нельзя указать прошедшее время.")
+        return cd["end_date"]
 
 
 class MessageCreateForm(StyleFormMixin, forms.ModelForm):

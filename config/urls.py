@@ -23,4 +23,5 @@ urlpatterns = [
     path("", include("newsletter.urls", namespace="newsletter")),
     path("users/", include("users.urls", namespace="users")),
     path("clients/", include("clients.urls", namespace="clients")),
+    path("__debug__/", include("debug_toolbar.urls")),
 ]

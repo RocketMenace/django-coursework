@@ -22,9 +22,9 @@
             {% for recipient in recipients %}
             <tr>
                 <th scope="row">{{ recipient.pk }}</th>
-                <td><a style="text-decoration:none; font-size: 20px;" href="{{ client.get_absolute_url }}"
+                <td><a style="text-decoration:none; font-size: 20px;" href="{% url 'clients:detail_client' recipient.pk %}"
                        class="row-link">{{ recipient.get_full_name }}</a></td>
-                <td>{{ client.email }}</td>
+                <td>{{ recipient.email }}</td>
                 </a>
             </tr>
             {% endfor %}

@@ -28,6 +28,8 @@ def main_page(request):
 class NewsLetterListView(ListView):
     model = NewsLetter
     context_object_name = "newsletters"
+    queryset = NewsLetter.objects.select_related()
+
 
 
 class NewsLetterCreateView(CreateView):
@@ -89,6 +91,9 @@ class MessageDeleteView(DeleteView):
     context_object_name = "message"
     success_url = reverse_lazy("newsletter:newsletters")
 
-class DistributionAttemptListView(ListView):
-    model = DistributionAttempt
-    context_object_name = "attempts"
+
+
+def distribution_attempts(request, pk):
+    attempts = NewsLetter.objects.get(pk=pk).attempts.all()
+    return render(request, "newsletter/distributionattempt_list.html", {"attempts": attempts})
+

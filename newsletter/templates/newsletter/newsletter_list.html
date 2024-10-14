@@ -38,7 +38,7 @@
                 <td>{{ newsletter.start_date }}</td>
                 <td>{{ newsletter.end_date }}</td>
                 <td>{{ newsletter.regularity }}</td>
-                <td><a style="text-decoration:none; font-size: 20px;" href="{% url 'newsletter:attempts' %}"
+                <td><a style="text-decoration:none; font-size: 20px;" href="{% url 'newsletter:attempts' newsletter.pk %}"
                        class="row-link">Просмотреть</a></td></td>
                 {% if newsletter.status == 'создана' %}
                 <td><button type="button" class="btn btn-primary">Запустить</button></td>
