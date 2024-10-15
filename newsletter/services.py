@@ -14,7 +14,7 @@ def send_newsletter(pk):
         response = send_mail(
             subject=newsletter.message.title,
             message=newsletter.message.body,
-            from_email="grizzly18721@yandex.2ru",
+            from_email=EMAIL_HOST_USER,
             recipient_list=emails,
             fail_silently=False,
         )
