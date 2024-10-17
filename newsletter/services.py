@@ -67,7 +67,7 @@ class NewsletterSender:
 
     def check_regularity(self, newsletter):
         """Check newsletter regularity."""
-        DistributionAttempt.objects.filter(newsletter).orde_by("last_try").first()
+        last_sent = DistributionAttempt.objects.filter(newsletter).orde_by("last_try").first()
 
     def send_newsletter(self, newsletters:list[NewsLetter], emails:list[str]):
 
