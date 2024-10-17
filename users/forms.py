@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, ValidationError
 from .models import User
 
 class StyleFormMixin:
@@ -12,3 +12,11 @@ class UserRegisterForm(StyleFormMixin, UserCreationForm):
     class Meta:
         model = User
         fields = ["email", "password1", "password2"]
+
+    def clean_email(self):
+        data = self.cleaned_data["email"]
+        if User.objects.only("email").filter(email=data).exists():
+            raise ValidationError("Пользователь с таким email уже существует.")
+        return data
+
+

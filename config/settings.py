@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "clients",
     "users",
     "django_apscheduler",
+    "blog"
 ]
 
 MIDDLEWARE = [
@@ -84,7 +85,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "django_coursework",
         "USER": "postgres",
-        "PASSWORD": "qwerty",
+        "PASSWORD": "qwerasdf",
         "HOST": "localhost",
         "PORT": 5432,
     }
@@ -150,3 +151,6 @@ EMAIL_USE_SSL = True
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+MEDIA_URL = "media/"
+MEDIA_ROOT = [BASE_DIR / "media"]

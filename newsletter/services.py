@@ -10,13 +10,13 @@ from .models import NewsLetter, DistributionAttempt
 class NewsletterSender:
     """Class for handling newsletter sending."""
 
-    def prepare_list_of_emails(self) -> list[str]:
+    def _prepare_list_of_emails(self):
         """Preparing list of emails for the following sending."""
         newsletters = (
             NewsLetter.objects.prefetch_related("recipient")
-            .only("recipient", "regularity")
+            .only("recipient", "regularity", "end_date", "status")
             .filter(start_date__lte=timezone.now())
-            .filter(status="создана")
+            .filter(status="запущена")
         )
         emails = []
         for newsletter in newsletters:
@@ -24,45 +24,47 @@ class NewsletterSender:
                 emails.append(recipient.email)
         return newsletters, emails
 
-    def update_status(self, newsletter):
+    def _update_status(self):
         """Change status of expired newsletters."""
-        if newsletter.end_date < timezone.now:
-            newsletter.status = NewsLetter.Status.COMPLETED
-            newsletter.save()
+        newsletters = NewsLetter.objects.only("end_date", "status")
+        for newsletter in newsletters:
+            if newsletter.end_date < timezone.now():
+                newsletter.status = NewsLetter.Status.COMPLETED
+                newsletter.save()
 
     def check_status(self, newsletter):
         """Check status if newsletter."""
         pass
 
-    def check_regularity(self, newsletter):
+    def _check_regularity(self, newsletters):
         """Check newsletter regularity."""
-        last_sent = (
-            DistributionAttempt.objects.filter(newsletter=newsletter)
-            .order_by("last_try")
-            .first()
-        )
-        if newsletter.regularity == NewsLetter.Regularity.DAILY:
-            next_send_time = last_sent.last_try + timezone.timedelta(
-                days=1,
-                hours=newsletter.start_date.hour,
-                minutes=newsletter.start_date.minute,
-            )
-        if newsletter.regularity == NewsLetter.Regularity.WEEKLY:
-            next_send_time = last_sent.last_try + timezone.timedelta(
-                days=7,
-                hours=newsletter.start_date.hour,
-                minutes=newsletter.start_date.minute,
-            )
-        if newsletter.regularity == NewsLetter.Regularity.MONTHLY:
-            next_send_time = last_sent.last_try + timezone.timedelta(
-                days=31,
-                hours=last_sent.start_date.hour,
-                minutes=last_sent.start_date.minute,
-            )
-        newsletter.start_date = next_send_time
-        newsletter.save()
 
-    def send_newsletter(self, newsletters: list[NewsLetter], emails: list[str]):
+        for newsletter in newsletters:
+            last_sent = (
+                DistributionAttempt.objects.only("last_try")
+                .filter(newsletter=newsletter)
+                .order_by("last_try")
+                .first()
+            )
+            if newsletter.regularity == NewsLetter.Regularity.DAILY:
+                next_send_time = last_sent.last_try + timezone.timedelta(
+                    days=1,
+                )
+                newsletter.start_date = next_send_time
+                newsletter.save()
+            if newsletter.regularity == NewsLetter.Regularity.WEEKLY:
+                next_send_time = last_sent.last_try + timezone.timedelta(
+                    days=7,
+                )
+                newsletter.start_date = next_send_time
+                newsletter.save()
+            if newsletter.regularity == NewsLetter.Regularity.MONTHLY:
+                next_send_time = last_sent.last_try + timezone.timedelta(
+                    days=31,
+                )
+                newsletters.update(start_date=next_send_time)
+
+    def _send_newsletter(self, newsletters: list[NewsLetter], emails: list[str]):
         """Sending emails to recipients that's specified in newsletters."""
 
         for newsletter in newsletters:
@@ -86,9 +88,11 @@ class NewsletterSender:
                     newsletter=newsletter,
                 )
 
-    def start():
-        newsletters, emails = NewsletterSender.prepare_list_of_emails()
-        for newsletter in newsletters:
-            NewsletterSender.check_regularity(newsletter)
-        NewsletterSender.send_newsletter(newsletters, emails)
-        NewsletterSender.update_status(newsletters)
+    def start(self):
+        """Pipeline for sending newsletters."""
+        sender = NewsletterSender()
+        newsletters, emails = sender._prepare_list_of_emails()
+        print(newsletters, emails, timezone.now())
+        sender._send_newsletter(newsletters, emails)
+        sender._check_regularity(newsletters)
+        sender._update_status()

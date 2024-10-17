@@ -20,7 +20,7 @@
                 <th scope="col">Получатели</th>
                 <th scope="col">Сообщение</th>
                 <th scope="col">Статус</th>
-                <th scope="col">Дата начала</th>
+                <th scope="col">Дата следующей отправки</th>
                 <th scope="col">Дата окончания</th>
                 <th scope="col">Периодичность</th>
                 <th scope="col">История</th>
@@ -35,7 +35,11 @@
                 <td><a style="text-decoration:none; font-size: 20px;" href="{% url 'newsletter:detail_message' newsletter.message.pk %}"
                        class="row-link">{{ newsletter.message.title }}</a></td>
                 <td>{{ newsletter.status }}</td>
+                {% if newsletter.start_date > newsletter.end_date %}
+                <td>Скоро завершится</td>
+                {% else %}
                 <td>{{ newsletter.start_date }}</td>
+                {% endif %}
                 <td>{{ newsletter.end_date }}</td>
                 <td>{{ newsletter.regularity }}</td>
                 <td><a style="text-decoration:none; font-size: 20px;" href="{% url 'newsletter:attempts' newsletter.pk %}"
