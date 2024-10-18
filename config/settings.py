@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     "clients",
     "users",
     "django_apscheduler",
-    "blog"
+    "blog",
 ]
 
 MIDDLEWARE = [
@@ -85,7 +85,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "django_coursework",
         "USER": "postgres",
-        "PASSWORD": "qwerasdf",
+        "PASSWORD": "qwerty",
         "HOST": "localhost",
         "PORT": 5432,
     }
@@ -154,3 +154,7 @@ INTERNAL_IPS = [
 
 MEDIA_URL = "media/"
 MEDIA_ROOT = [BASE_DIR / "media"]
+
+LOGIN_REDIRECT_URL = ""
+LOGIN_URL = "users:login"
+LOGOUT_URL = ""

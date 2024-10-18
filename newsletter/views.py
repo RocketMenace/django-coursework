@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
@@ -16,11 +17,16 @@ from .forms import (
 )
 from .models import NewsLetter, Message, DistributionAttempt
 
+
 # Create your views here.
 def recipients_list(request, pk):
     recipients = NewsLetter.objects.get(pk=pk).recipient.all()
-    return render(request, "newsletter/recipients_list.html", {"recipients": recipients})
+    return render(
+        request, "newsletter/recipients_list.html", {"recipients": recipients}
+    )
 
+
+# @login_required
 def main_page(request):
     return render(request, "newsletter/main_page.html")
 
@@ -29,7 +35,6 @@ class NewsLetterListView(ListView):
     model = NewsLetter
     context_object_name = "newsletters"
     queryset = NewsLetter.objects.select_related()
-
 
 
 class NewsLetterCreateView(CreateView):
@@ -92,8 +97,8 @@ class MessageDeleteView(DeleteView):
     success_url = reverse_lazy("newsletter:newsletters")
 
 
-
 def distribution_attempts(request, pk):
     attempts = NewsLetter.objects.get(pk=pk).attempts.all()
-    return render(request, "newsletter/distributionattempt_list.html", {"attempts": attempts})
-
+    return render(
+        request, "newsletter/distributionattempt_list.html", {"attempts": attempts}
+    )
