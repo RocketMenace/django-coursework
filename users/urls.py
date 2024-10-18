@@ -8,9 +8,10 @@ from django.contrib.auth.views import (
     PasswordResetDoneView,
     PasswordResetConfirmView,
     PasswordResetCompleteView,
+
 )
 from .apps import UsersConfig
-from .views import RegisterView
+from .views import RegisterView, VerificationView
 
 
 app_name = UsersConfig.name
@@ -45,4 +46,5 @@ urlpatterns = [
     ),
     # User register url.
     path("register/", RegisterView.as_view(), name="register"),
+    path("activate/<uid64>/<token>", VerificationView.as_view(),  name="verification")
 ]

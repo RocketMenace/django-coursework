@@ -19,6 +19,7 @@ from .apps import NewsletterConfig
 app_name = NewsletterConfig.name
 
 urlpatterns = [
+
     path("", main_page, name="main_page"),
 
     # CRUD urls for newsletter.

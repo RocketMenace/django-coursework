@@ -85,7 +85,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "django_coursework",
         "USER": "postgres",
-        "PASSWORD": "qwerty",
+        "PASSWORD": "qwerasdf",
         "HOST": "localhost",
         "PORT": 5432,
     }
@@ -136,8 +136,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 AUTH_USER_MODEL = "users.User"
-LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = "/"
+
 
 # Email settings
 EMAIL_HOST = "smtp.yandex.ru"
@@ -155,6 +154,6 @@ INTERNAL_IPS = [
 MEDIA_URL = "media/"
 MEDIA_ROOT = [BASE_DIR / "media"]
 
-LOGIN_REDIRECT_URL = ""
+LOGIN_REDIRECT_URL = "newsletter:main_page"
 LOGIN_URL = "users:login"
-LOGOUT_URL = ""
+LOGOUT_URL = "users:login"
