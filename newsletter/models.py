@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from clients.models import Client
-
+from users.models import User
 
 # Create your models here.
 
@@ -32,6 +32,7 @@ class NewsLetter(models.Model):
         CREATED = "создана"
         RUNNING = "запущена"
 
+    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="автор")
     start_date = models.DateTimeField(verbose_name="дата первой отправки")
     end_date = models.DateTimeField(verbose_name="дата завершения")
     message = models.OneToOneField(
