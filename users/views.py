@@ -2,17 +2,17 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
 from django.shortcuts import redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import View
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView, DetailView, UpdateView
 
 from config.settings import EMAIL_HOST_USER
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, UserUpdateForm
 from .models import User
 from .token_generator import verification_token
-
+from django.contrib.auth.models import Group
 # Create your views here.
 
 
@@ -49,5 +49,32 @@ class VerificationView(View):
         uid64 = force_str(urlsafe_base64_decode(uid64))
         user = User.objects.get(pk=uid64)
         user.is_active = True
+        group = Group.objects.get(name="Пользователи платформы")
+        user.groups.add(group)
         user.save()
         return redirect("users:login")
+
+class UsersListView(ListView):
+    model = User
+    context_object_name = "users"
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(is_staff=False)
+
+
+class UsersDetailView(UpdateView):
+    model = User
+    context_object_name = "user"
+    form_class = UserUpdateForm
+    success_url = reverse_lazy("users:users_list")
+
+
+    def form_valid(self, form):
+        if self.request.method == "POST":
+            form.save()
+        else:
+            form = form
+        return super().form_valid(form)
+
+

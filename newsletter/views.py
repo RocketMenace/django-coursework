@@ -1,11 +1,6 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.db.models.query import QuerySet
-from django.forms import BaseModelForm
-from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views import View
 from django.views.generic import (
     CreateView,
     UpdateView,
@@ -13,13 +8,17 @@ from django.views.generic import (
     DetailView,
     DeleteView,
 )
+
+from .custom_mixins import NewsLetterOwnerMixin, NewsLetterOwnerCreateMixin, NewsLetterOwnerUpdateMixin, \
+    MessageOwnerCreateMixin, MessageOwnerUpdateMixin, MessageOwnerMixin
 from .forms import (
     NewsLetterCreateForm,
     NewsLetterUpdateForm,
     MessageCreateForm,
     MessageUpdateForm,
+    ContentManagerUpdateNewsLetterForm
 )
-from .models import NewsLetter, Message, DistributionAttempt
+from .models import NewsLetter, Message
 
 
 # Create your views here.
@@ -36,81 +35,76 @@ def main_page(request):
     return render(request, "newsletter/main_page.html")
 
 
-class NewsLetterListView(LoginRequiredMixin, ListView):
-    model = NewsLetter
+class NewsLetterListView(NewsLetterOwnerMixin, ListView):
     context_object_name = "newsletters"
-    # queryset = NewsLetter.objects.select_related()
-
-    def get_queryset(self):
-        qs = super().get_queryset()
-        return qs.select_related("message").filter(author=self.request.user.pk)
+    permission_required = "newsletter.Can_view_newsletters"
 
 
-class NewsLetterCreateView(LoginRequiredMixin, CreateView):
 
-    template_name = "newsletter/newsletter_create_form.html"
-    model = NewsLetter
+class NewsLetterCreateView(NewsLetterOwnerCreateMixin, CreateView):
+
     context_object_name = "newsletter"
     form_class = NewsLetterCreateForm
-    success_url = reverse_lazy("newsletter:newsletters")
-
-    def form_valid(self, form):
-        if form.is_valid():
-            newsletter = form.save(commit=False)
-            newsletter.author = self.request.user.pk
-        return super().form_valid(form)
+    permission_required = "newsletter.Can_create_newsletter"
 
 
-class NewsLetterDetailView(LoginRequiredMixin, DetailView):
+
+
+
+class NewsLetterDetailView(DetailView):
     model = NewsLetter
     context_object_name = "newsletter"
+    permission_required = "newsletter.Can_edit_newsletter"
 
 
-class NewsLetterUpdateView(LoginRequiredMixin, UpdateView):
-    template_name = "newsletter/newsletter_update_form.html"
-    model = NewsLetter
+
+class NewsLetterUpdateView(NewsLetterOwnerUpdateMixin, UpdateView):
     context_object_name = "newsletter"
     form_class = NewsLetterUpdateForm
-    success_url = reverse_lazy("newsletter:newsletters")
+    permission_required = "newsletter.Can_edit_newsletter"
+
+    def get_form_class(self):
+        if self.request.user.is_staff:
+            return ContentManagerUpdateNewsLetterForm
+        return NewsLetterUpdateForm
 
 
-class NewsLetterDeleteView(LoginRequiredMixin, DeleteView):
-    model = NewsLetter
+
+class NewsLetterDeleteView(NewsLetterOwnerMixin, DeleteView):
+
     context_object_name = "newsletter"
-    success_url = reverse_lazy("newsletter:newsletters")
+    permission_required = "newsletter.Can_delete_newsletter"
 
 
-class MessageListView(LoginRequiredMixin, ListView):
-    model = Message
+
+class MessageListView(MessageOwnerMixin, ListView):
     context_object_name = "messages"
+    permission_required = "newsletter.Can_view_message"
 
 
-class MessageCreateView(LoginRequiredMixin, CreateView):
-    model = Message
+
+class MessageCreateView(MessageOwnerCreateMixin, CreateView):
     form_class = MessageCreateForm
-    template_name = "newsletter/message_create_form.html"
     context_object_name = "message"
-    success_url = reverse_lazy("newsletter:newsletters")
+    permission_required = "newsletter.Can_create_message"
 
 
-class MessageDetailView(LoginRequiredMixin, DetailView):
+
+class MessageDetailView(DetailView):
     model = Message
     context_object_name = "message"
+    permission_required = "newsletter.Can_edit_message"
 
 
-class MessageUpdateView(LoginRequiredMixin, UpdateView):
-    model = Message
+class MessageUpdateView(MessageOwnerUpdateMixin ,UpdateView):
     context_object_name = "message"
     form_class = MessageUpdateForm
-    template_name = "newsletter/message_update_form.html"
-    success_url = reverse_lazy("newsletter:newsletters")
+    permission_required = "newsletter.Can_edit_message"
 
 
-class MessageDeleteView(LoginRequiredMixin, DeleteView):
-    model = Message
+class MessageDeleteView(MessageOwnerMixin, DeleteView):
     context_object_name = "message"
-    success_url = reverse_lazy("newsletter:newsletters")
-
+    permission_required = "newsletter.Can_delete_message"
 
 @login_required
 def distribution_attempts(request, pk):

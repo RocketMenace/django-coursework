@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-
+from users.models import User
 # Create your models here.
 
 
@@ -11,6 +11,7 @@ class Client(models.Model):
     first_name = models.CharField(max_length=50, verbose_name="имя")
     middle_name = models.CharField(max_length=50, verbose_name="отчество")
     comment = models.TextField()
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="владелец")
 
     class Meta:
 

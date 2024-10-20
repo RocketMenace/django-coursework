@@ -11,3 +11,12 @@ class User(AbstractUser):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
+
+    class Meta:
+
+        verbose_name = "пользователь"
+        verbose_name_plural = "пользователи"
+        indexes = [models.Index(fields=["email"]),]
+        permissions = [
+            ("change_user_is_active", "Can change user status"),
+        ]

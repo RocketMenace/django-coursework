@@ -15,6 +15,9 @@ class ClientCreateForm(StyleFormMixin, forms.ModelForm):
 
         model = Client
         fields = "__all__"
+        exclude = [
+            "owner",
+        ]
 
 
 class ClientUpdateForm(StyleFormMixin, forms.ModelForm):
@@ -23,6 +26,10 @@ class ClientUpdateForm(StyleFormMixin, forms.ModelForm):
 
         model = Client
         fields = "__all__"
+        exclude = [
+            "owner",
+        ]
+
 
 class ClientDeleteForm(StyleFormMixin, forms.Form):
 

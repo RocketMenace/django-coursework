@@ -92,7 +92,6 @@ class NewsletterSender:
         """Pipeline for sending newsletters."""
         sender = NewsletterSender()
         newsletters, emails = sender._prepare_list_of_emails()
-        print(newsletters, emails, timezone.now())
         sender._send_newsletter(newsletters, emails)
         sender._check_regularity(newsletters)
         sender._update_status()

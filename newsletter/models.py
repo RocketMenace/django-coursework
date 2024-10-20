@@ -11,6 +11,7 @@ class Message(models.Model):
 
     title = models.CharField(max_length=50, verbose_name="тема сообщения")
     body = models.TextField(verbose_name="текст сообщения")
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="владелец")
 
     class Meta:
         verbose_name = "сообщение"
@@ -32,7 +33,7 @@ class NewsLetter(models.Model):
         CREATED = "создана"
         RUNNING = "запущена"
 
-    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="автор")
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="автор")
     start_date = models.DateTimeField(verbose_name="дата первой отправки")
     end_date = models.DateTimeField(verbose_name="дата завершения")
     message = models.OneToOneField(
@@ -58,6 +59,9 @@ class NewsLetter(models.Model):
         verbose_name = "рассылка"
         verbose_name_plural = "рассылки"
         ordering = ["status", "start_date"]
+        permissions = [
+            ("change_newsletter_status", "Can change newsletter status")
+        ]
 
     def __str__(self):
         return f"Рассылка: {self.pk}, Статус: {self.status}, Периодичность: {self.regularity}"

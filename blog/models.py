@@ -6,9 +6,9 @@ class Article(models.Model):
 
     title = models.CharField(max_length=100, verbose_name="заголовок")
     body = models.TextField(verbose_name="содержимое")
-    image = models.ImageField(upload_to='blog/%Y/%m/%d/', verbose_name="изображение")
+    image = models.ImageField(upload_to="blog/", verbose_name="изображение")
     views_count = models.PositiveIntegerField(default=0, verbose_name="количество  просмотров")
-    publish = models.DateTimeField(default=timezone.now(), verbose_name="дата публикации")
+    publish = models.DateTimeField(auto_now_add=timezone.now(), verbose_name="дата публикации")
 
     class Meta:
 

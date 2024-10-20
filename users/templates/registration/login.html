@@ -13,8 +13,8 @@
     <form action="{% url 'users:login' %}" method="post">
         {{ form.as_p }}
         {% csrf_token %}
-        <input type="hidden" name="next" value="{{ next }}" />
-        <p><input type="submit" value="Log-in"></p>
+        <p><input class="p-2 btn btn-outline-primary" type="submit" value="Войти"></p>
+        <a type="button" class="w-20 btn btn-lg btn-primary" href="{% url 'users:register' %}" role="button">Регистрация</a>
     </form>
 </div>
 {% endblock %}

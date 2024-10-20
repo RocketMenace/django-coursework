@@ -1,0 +1,20 @@
+{% extends "clients/base.html" %}
+{% load my_tags %}
+
+
+{% block content %}
+<div class="row text-center">
+        <div class="col-10">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{ article.title }}</h4>
+                </div>
+                <div class="card-body">
+                    <p><img src="{{ article.image | media_filter }}" alt="Image not found" height="300" width="300"></p>
+                    <p>{{ article.body | truncatechars:100 }}</p>
+                    <p> Количество просмотров {{ article.views_count }} Дата публикации {{ article.publish }} </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

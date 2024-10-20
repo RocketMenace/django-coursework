@@ -1,9 +1,11 @@
 {% extends "clients/base.html" %}
 
 {% block title %} Просмотр клиентов {% endblock %}
-{% block client_addition %}
+{% block options %}
 <a class="p-2 btn btn-outline-primary" href="{% url 'clients:create_client' %}"
    role="button">Добавление клиента</a>
+<a class="p-2 btn btn-outline-primary" href="{% url 'newsletter:newsletters' %}"
+   role="button">Вернуться</a>
 {% endblock %}
 {% block content %}
 

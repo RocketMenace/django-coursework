@@ -16,6 +16,9 @@ class NewsLetterCreateForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = NewsLetter
         fields = "__all__"
+        exclude = [
+            "owner",
+        ]
         widgets = {
             "start_date": DateTimeInput(
                 format="%Y-%m-%d %H:%M", attrs={"type": "datetime-local"}
@@ -43,6 +46,9 @@ class NewsLetterUpdateForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = NewsLetter
         fields = "__all__"
+        exclude = [
+            "owner",
+        ]
         widgets = {
             "start_date": DateTimeInput(
                 format="%Y-%m-%d %H:%M", attrs={"type": "datetime-local"}
@@ -70,6 +76,9 @@ class MessageCreateForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Message
         fields = "__all__"
+        exclude = [
+            "owner",
+        ]
 
 
 class MessageUpdateForm(StyleFormMixin, forms.ModelForm):
@@ -77,3 +86,12 @@ class MessageUpdateForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Message
         fields = "__all__"
+        exclude = [
+            "owner",
+        ]
+
+class ContentManagerUpdateNewsLetterForm(StyleFormMixin, forms.ModelForm):
+
+    class Meta:
+        model = NewsLetter
+        fields = ["status",]

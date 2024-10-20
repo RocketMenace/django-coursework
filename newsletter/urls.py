@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.decorators.cache import cache_page
 
 from .models import DistributionAttempt
 from .views import (
@@ -31,7 +32,7 @@ urlpatterns = [
         NewsLetterDetailView.as_view(),
         name="detail_newsletter",
     ),
-    path("newsletters/", NewsLetterListView.as_view(), name="newsletters"),
+    path("newsletters/", cache_page(60)(NewsLetterListView.as_view()), name="newsletters"),
     path(
         "edit_newsletter/<int:pk>",
         NewsLetterUpdateView.as_view(),
