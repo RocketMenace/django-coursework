@@ -1,0 +1,1 @@
+[{"model": "clients.client", "pk": 1, "fields": {"email": "test@gmail.com", "last_name": "Gosling", "first_name": "Ryan", "middle_name": "Ivanovich", "comment": "Some text", "owner": 3}}, {"model": "clients.client", "pk": 2, "fields": {"email": "django@gmail.com", "last_name": "Potter", "first_name": "Harry", "middle_name": "Petrovich", "comment": "Тектс", "owner": 3}}]
