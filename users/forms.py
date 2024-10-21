@@ -1,5 +1,6 @@
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+
 from .models import User
 
 
@@ -25,8 +26,11 @@ class UserRegisterForm(StyleFormMixin, UserCreationForm):
             raise forms.ValidationError("Пользователь с таким email уже существует.")
         return data
 
+
 class UserUpdateForm(StyleFormMixin, forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ["is_active",]
+        fields = [
+            "is_active",
+        ]

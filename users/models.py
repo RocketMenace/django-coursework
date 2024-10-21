@@ -8,7 +8,6 @@ class User(AbstractUser):
     username = None
     email = models.EmailField(unique=True, verbose_name="электронная почта")
 
-
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
@@ -16,7 +15,9 @@ class User(AbstractUser):
 
         verbose_name = "пользователь"
         verbose_name_plural = "пользователи"
-        indexes = [models.Index(fields=["email"]),]
+        indexes = [
+            models.Index(fields=["email"]),
+        ]
         permissions = [
             ("change_user_is_active", "Can change user status"),
         ]

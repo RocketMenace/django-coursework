@@ -24,6 +24,7 @@ class ClientsListView(ClientOwnerMixin, ListView):
     context_object_name = "clients"
     permission_required = "clients.Can_view_clients"
 
+
 class ClientsDetailView(DetailView):
 
     model = Client
@@ -48,4 +49,3 @@ class ClientsUpdateView(ClientOwnerUpdateMixin, UpdateView):
 class ClientsDeleteView(ClientOwnerMixin, DeleteView):
     context_object_name = "client"
     permission_required = "clients.Can_delete_clients"
-

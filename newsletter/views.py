@@ -1,6 +1,5 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from django.urls import reverse_lazy
 from django.views.generic import (
     CreateView,
     UpdateView,
@@ -80,6 +79,7 @@ class NewsLetterUpdateView(NewsLetterOwnerUpdateMixin, UpdateView):
         kwargs = super(NewsLetterUpdateView, self).get_form_kwargs()
         kwargs["request"] = self.request
         return kwargs
+
 
 class NewsLetterDeleteView(NewsLetterOwnerMixin, DeleteView):
 

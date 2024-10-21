@@ -1,11 +1,9 @@
-from pyexpat.errors import messages
-
-from IPython.core.compilerop import code_name
 from django.contrib.auth.models import Group, Permission
-from django.core.management import BaseCommand
 from django.contrib.contenttypes.models import ContentType
-from newsletter.models import NewsLetter, Message
+from django.core.management import BaseCommand
+
 from clients.models import Client
+from newsletter.models import NewsLetter, Message
 
 
 class Command(BaseCommand):
@@ -74,7 +72,6 @@ class Command(BaseCommand):
                 can_edit_clients,
                 can_create_clients,
                 can_delete_clients,
-
             ]
         )
         group.permissions.set(

@@ -13,6 +13,7 @@ from .forms import UserRegisterForm, UserUpdateForm
 from .models import User
 from .token_generator import verification_token
 from django.contrib.auth.models import Group
+
 # Create your views here.
 
 
@@ -35,13 +36,24 @@ class RegisterView(SuccessMessageMixin, CreateView):
             domain = get_current_site(self.request).domain
             uid64 = urlsafe_base64_encode(force_bytes(new_user.pk))
             token = verification_token.make_token(new_user)
-            link = reverse("users:verification", kwargs={"uid64": uid64, "token": token})
+            link = reverse(
+                "users:verification", kwargs={"uid64": uid64, "token": token}
+            )
             activate_url = "http://" + domain + link
             email = user_creation_form.cleaned_data["email"]
             subject = "Уведомление о регистрации на платформе"
             message = f"Для завершения регистрации перейдите по ссылке {activate_url}"
-            send_mail(subject, message, EMAIL_HOST_USER, [email, ], fail_silently=True)
+            send_mail(
+                subject,
+                message,
+                EMAIL_HOST_USER,
+                [
+                    email,
+                ],
+                fail_silently=True,
+            )
         return super().form_valid(form)
+
 
 class VerificationView(View):
 
@@ -53,6 +65,7 @@ class VerificationView(View):
         user.groups.add(group)
         user.save()
         return redirect("users:login")
+
 
 class UsersListView(ListView):
     model = User
@@ -69,12 +82,9 @@ class UsersDetailView(UpdateView):
     form_class = UserUpdateForm
     success_url = reverse_lazy("users:users_list")
 
-
     def form_valid(self, form):
         if self.request.method == "POST":
             form.save()
         else:
             form = form
         return super().form_valid(form)
-
-

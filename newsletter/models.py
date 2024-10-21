@@ -1,8 +1,9 @@
 from django.db import models
 from django.urls import reverse
-from django.utils import timezone
+
 from clients.models import Client
 from users.models import User
+
 
 # Create your models here.
 
@@ -59,9 +60,7 @@ class NewsLetter(models.Model):
         verbose_name = "рассылка"
         verbose_name_plural = "рассылки"
         ordering = ["status", "start_date"]
-        permissions = [
-            ("change_newsletter_status", "Can change newsletter status")
-        ]
+        permissions = [("change_newsletter_status", "Can change newsletter status")]
 
     def __str__(self):
         return f"Рассылка: {self.pk}, Статус: {self.status}, Периодичность: {self.regularity}"

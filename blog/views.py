@@ -1,18 +1,16 @@
 from django.shortcuts import render
-from random import shuffle
-
 from django.urls import reverse_lazy
 from django.views.generic import (
     CreateView,
     UpdateView,
     DetailView,
     DeleteView,
-    ListView,
-    View,
 )
-from .models import Article
+
 from newsletter.models import NewsLetter
 from .forms import ArticleCreateForm, ArticleUpdateForm
+from .models import Article
+
 
 # Create your views here.
 
@@ -59,6 +57,6 @@ def main_page(request):
         "newsletters_count": newsletters_count,
         "newsletters_count_active": newsletters_count_active,
         "newsletter_unique_clients": newsletter_unique_clients,
-        "articles": articles
+        "articles": articles,
     }
     return render(request, "blog/blog_main_page.html", context)

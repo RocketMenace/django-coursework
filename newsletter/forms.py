@@ -1,9 +1,9 @@
 from django import forms
-from django.forms import DateTimeField, DateTimeInput, SplitDateTimeWidget
+from django.forms import DateTimeInput
 from django.utils import timezone
 
 from clients.models import Client
-from .models import NewsLetter, Message, DistributionAttempt
+from .models import NewsLetter, Message
 
 
 class StyleFormMixin:

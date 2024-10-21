@@ -9,5 +9,6 @@ class NewsletterConfig(AppConfig):
     def ready(self):
 
         from newsletter.newsletter_scheduler import start_sending
+
         sleep(2)
         start_sending()

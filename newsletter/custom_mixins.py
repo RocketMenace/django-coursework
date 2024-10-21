@@ -1,10 +1,8 @@
-from django.core.exceptions import PermissionDenied
-
-from .models import NewsLetter
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.urls import reverse_lazy
+
 from .models import NewsLetter, Message
-from .forms import NewsLetterCreateForm
+
 
 class OwnerMixin:
 
@@ -22,28 +20,18 @@ class OwnerEditMixin:
         return super().form_valid(form)
 
 
-
-
-
-
-
 class NewsLetterOwnerMixin(OwnerMixin, LoginRequiredMixin, PermissionRequiredMixin):
 
     model = NewsLetter
     success_url = reverse_lazy("newsletter:newsletters")
-    permission_denied_message = "Для совершения этого действия обратитесь к администратору"
+    permission_denied_message = (
+        "Для совершения этого действия обратитесь к администратору"
+    )
 
 
 class NewsLetterOwnerCreateMixin(NewsLetterOwnerMixin, OwnerEditMixin):
 
     template_name = "newsletter/newsletter_create_form.html"
-
-    # def get_form_class(self):
-    #     user = self.request.user
-    #     if user.is_superuser:
-    #         return NewsLetterCreateForm
-    #     if user == self.object.owner:
-    #         return NewsLetterCreateForm
 
 
 class NewsLetterOwnerUpdateMixin(NewsLetterOwnerMixin, OwnerEditMixin):
@@ -56,11 +44,12 @@ class MessageOwnerMixin(OwnerMixin, PermissionRequiredMixin, LoginRequiredMixin)
     model = Message
     success_url = reverse_lazy("newsletter:newsletters")
 
+
 class MessageOwnerCreateMixin(MessageOwnerMixin, OwnerEditMixin):
 
     template_name = "newsletter/message_create_form.html"
 
+
 class MessageOwnerUpdateMixin(MessageOwnerMixin, OwnerEditMixin):
 
     template_name = "newsletter/message_update_form.html"
-

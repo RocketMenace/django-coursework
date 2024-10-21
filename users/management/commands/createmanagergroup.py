@@ -1,7 +1,7 @@
 from django.contrib.auth.models import Group, Permission
-from django.core.management import BaseCommand
 from django.contrib.contenttypes.models import ContentType
-from newsletter.models import NewsLetter
+from django.core.management import BaseCommand
+
 from users.models import User
 
 
