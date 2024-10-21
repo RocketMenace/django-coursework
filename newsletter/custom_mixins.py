@@ -4,7 +4,7 @@ from .models import NewsLetter
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.urls import reverse_lazy
 from .models import NewsLetter, Message
-
+from .forms import NewsLetterCreateForm
 
 class OwnerMixin:
 
@@ -19,8 +19,10 @@ class OwnerEditMixin:
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
-
         return super().form_valid(form)
+
+
+
 
 
 
@@ -35,6 +37,13 @@ class NewsLetterOwnerMixin(OwnerMixin, LoginRequiredMixin, PermissionRequiredMix
 class NewsLetterOwnerCreateMixin(NewsLetterOwnerMixin, OwnerEditMixin):
 
     template_name = "newsletter/newsletter_create_form.html"
+
+    # def get_form_class(self):
+    #     user = self.request.user
+    #     if user.is_superuser:
+    #         return NewsLetterCreateForm
+    #     if user == self.object.owner:
+    #         return NewsLetterCreateForm
 
 
 class NewsLetterOwnerUpdateMixin(NewsLetterOwnerMixin, OwnerEditMixin):

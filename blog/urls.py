@@ -13,7 +13,7 @@ from .apps import BlogConfig
 app_name = BlogConfig.name
 
 urlpatterns = [
-    path("", cache_page(60)(main_page), name="main_page"),
+    path("", cache_page(10)(main_page), name="main_page"),
     # path("", ArticleListView.as_view(), name="main_page"),
     path("create/", ArticleCreateView.as_view(), name="create_article"),
     path("detail/<int:pk>/", ArticleDetailView.as_view(), name="detail_article"),

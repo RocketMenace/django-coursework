@@ -1,6 +1,8 @@
 from django import forms
 from django.forms import DateTimeField, DateTimeInput, SplitDateTimeWidget
 from django.utils import timezone
+
+from clients.models import Client
 from .models import NewsLetter, Message, DistributionAttempt
 
 
@@ -12,6 +14,17 @@ class StyleFormMixin:
 
 
 class NewsLetterCreateForm(StyleFormMixin, forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+
+        self.request = kwargs.pop("request")
+        super(NewsLetterCreateForm, self).__init__(*args, **kwargs)
+        self.fields["recipient"].queryset = Client.objects.filter(
+            owner=self.request.user
+        )
+        self.fields["message"].queryset = Message.objects.filter(
+            owner=self.request.user
+        )
 
     class Meta:
         model = NewsLetter
@@ -42,6 +55,17 @@ class NewsLetterCreateForm(StyleFormMixin, forms.ModelForm):
 
 
 class NewsLetterUpdateForm(StyleFormMixin, forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+
+        self.request = kwargs.pop("request")
+        super(NewsLetterUpdateForm, self).__init__(*args, **kwargs)
+        self.fields["recipient"].queryset = Client.objects.filter(
+            owner=self.request.user
+        )
+        self.fields["message"].queryset = Message.objects.filter(
+            owner=self.request.user
+        )
 
     class Meta:
         model = NewsLetter
@@ -90,8 +114,11 @@ class MessageUpdateForm(StyleFormMixin, forms.ModelForm):
             "owner",
         ]
 
+
 class ContentManagerUpdateNewsLetterForm(StyleFormMixin, forms.ModelForm):
 
     class Meta:
         model = NewsLetter
-        fields = ["status",]
+        fields = [
+            "status",
+        ]
